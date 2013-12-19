@@ -13,15 +13,16 @@ public class Light extends AbstractEntity {
 
 	int _radius;
 	int _precision = 10000;
-	float _opacity = 0.01f;
+	float _opacity = 0.1f;
 	Color _color;
 	AbstractEntity _linkedEntity = null;
 	
-	public Light(int pX, int pY, int pRadius, Color pColor,
+	public Light(int pX, int pY, int pRadius, float pOpacity, Color pColor,
 			AbstractScene pScene) {
 		super(pX, pY, pRadius, pRadius, pScene);
 		_radius = pRadius;
 		_color = pColor;
+		_opacity = pOpacity;
 	}
 
 	@Override
@@ -64,8 +65,17 @@ public class Light extends AbstractEntity {
 					(float)_color.getBlue()/255,
 					_opacity);
 	      	gl.glVertex2d(getX(), getY());				
-	      	gl.glVertex2d(getX()+ Math.cos(degInRad) * _radius, getY() + Math.sin(degInRad) * _radius);
-	      	
+	      	gl.glVertex2d(getX()+ Math.cos(degInRad) * _radius/2, getY() + Math.sin(degInRad) * _radius/2);
+			gl.glColor4f((float)_color.getRed()/255,
+					(float)_color.getGreen()/255,
+					(float)_color.getBlue()/255,
+					_opacity);
+	      	gl.glVertex2d(getX()+ Math.cos(degInRad) * _radius/2, getY() + Math.sin(degInRad) * _radius/2);
+			gl.glColor4f((float)_color.getRed()/255,
+					(float)_color.getGreen()/255,
+					(float)_color.getBlue()/255,
+					0);
+		 	gl.glVertex2d(getX()+ Math.cos(degInRad) * _radius, getY() + Math.sin(degInRad) * _radius);
 	   }
 	 
 	   gl.glEnd();

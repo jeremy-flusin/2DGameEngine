@@ -12,7 +12,8 @@ import com.jflusin.engine.scenes.AbstractScene;
 public class Light extends AbstractEntity {
 
 	int _radius;
-	int _precision = 500;
+	int _precision = 10000;
+	float _opacity = 0.01f;
 	Color _color;
 	AbstractEntity _linkedEntity = null;
 	
@@ -34,42 +35,37 @@ public class Light extends AbstractEntity {
 		gl.glEnable(GL2.GL_POINT_SMOOTH);
 		gl.glHint(GL2.GL_POINT_SMOOTH_HINT, GL2.GL_NICEST);
 		
-		for(int i = 0; i < _precision; i++){
-			float alpha = 0.5f - (float)0.5f/_precision * (float)i;
-			gl.glColor4f((float)_color.getRed()/255,
-					(float)_color.getGreen()/255,
-					(float)_color.getBlue()/255,
-					alpha);
-			drawCircle((double)_radius/_precision * i, gl);
-		}
+		drawCircle(gl);
 		gl.glDisable(GL2.GL_BLEND);
 	}
 
 	@Override
 	public void update() {
-		if(_scene.getSceneFactory().getGame().getKeyboardListener().isKeyPressed(KeyEvent.VK_D)){
-			setX(getX()+5);
-		}
-		if(_scene.getSceneFactory().getGame().getKeyboardListener().isKeyPressed(KeyEvent.VK_Q)){
-			setX(getX()-5);
-		}
 		if(_scene.getSceneFactory().getGame().getKeyboardListener().isKeyPressed(KeyEvent.VK_ADD)){
-			_precision++;
+			_opacity += 0.0001f;
 		}
 		if(_scene.getSceneFactory().getGame().getKeyboardListener().isKeyPressed(KeyEvent.VK_ENTER)){
-			_precision--;
+			_opacity -= 0.0001f;
 		}
 		
 	}
 
-	void drawCircle(double pseudoRadius, GL2 gl)
+	void drawCircle(GL2 gl)
 	{
-	   gl.glBegin(GL2.GL_LINE_LOOP);
 	 
-	   for (int i=0; i < 360; i++)
+	   for (int i=0; i < _precision; i++)
 	   {
-	      float degInRad = (float)i * (float)(Math.PI/180);
-	      gl.glVertex2d(getX()+ Math.cos(degInRad)*pseudoRadius, getY() + Math.sin(degInRad)*pseudoRadius);
+	      float degInRad = (float)i * (float)(2 * Math.PI/_precision);
+	      gl.glShadeModel(GL2.GL_SMOOTH);
+	      gl.glBegin(GL2.GL_LINES);
+	      
+			gl.glColor4f((float)_color.getRed()/255,
+					(float)_color.getGreen()/255,
+					(float)_color.getBlue()/255,
+					_opacity);
+	      	gl.glVertex2d(getX(), getY());				
+	      	gl.glVertex2d(getX()+ Math.cos(degInRad) * _radius, getY() + Math.sin(degInRad) * _radius);
+	      	
 	   }
 	 
 	   gl.glEnd();

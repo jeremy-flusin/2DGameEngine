@@ -14,8 +14,6 @@ public abstract class AbstractEntity {
 	protected int _height = 0;
 	protected AbstractScene _scene;
 	
-	private static int _textureID = 0;
-	
 	public AbstractEntity(int pX, int pY, int pWidth, int pHeight, AbstractScene pScene) {
 		_x = pX;
 		_y = pY;
@@ -63,14 +61,6 @@ public abstract class AbstractEntity {
 	public Rectangle getBounds(){
 		return new Rectangle(_x, _y, _width, _height);
 	}
-	
-	public static void setTextureID(int pTextureId){
-		_textureID = pTextureId;
-	}
-	
-	public int getTextureID(){
-		return _textureID;
-	}	
 	
 	public AbstractScene getScene(){
 		return _scene;

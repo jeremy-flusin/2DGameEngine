@@ -9,6 +9,8 @@ import com.jflusin.engine.scenes.AbstractScene;
 
 public abstract class TexturedRectangleEntity extends AbstractEntity implements ITexturableEntity{
 
+	protected int _textureID = 0;
+	
 	public TexturedRectangleEntity(int _x, int _y, int _width, int _height, AbstractScene _pScene){
 		super(_x, _y, _width, _height, _pScene);
 	}
@@ -23,7 +25,7 @@ public abstract class TexturedRectangleEntity extends AbstractEntity implements 
 		int width = getWidth();
 		int height = getHeight();
 		
-		if(getTextureID() != 0){
+		if(getGLTextureID() != 0){
 			//Drawing with texture
 			gl.glClearColor(0, 0, 0, 1);
 			gl.glClear(GL2.GL_DEPTH_BUFFER_BIT);
@@ -31,7 +33,7 @@ public abstract class TexturedRectangleEntity extends AbstractEntity implements 
 					GL2.GL_NEAREST);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
 					GL2.GL_NEAREST);
-			gl.glBindTexture(GL2.GL_TEXTURE_2D, getTextureID());
+			gl.glBindTexture(GL2.GL_TEXTURE_2D, getGLTextureID());
 			gl.glEnable(GL2.GL_BLEND);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glEnable(GL2.GL_TEXTURE_2D);
@@ -59,8 +61,16 @@ public abstract class TexturedRectangleEntity extends AbstractEntity implements 
 		}
 
 	}
-
+	
+	public void setTextureID(int pTextureId){
+		_textureID = pTextureId;
+	}
+	
 	public int getTextureID(){
-		return _scene.getTextureMapper().getTextureID(this.getClass());
+		return _textureID;
+	}	
+	
+	public int getGLTextureID(){
+		return _scene.getTextureMapper().getGLTextureID(this.getClass(), getTextureID());
 	}
 }

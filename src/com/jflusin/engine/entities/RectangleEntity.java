@@ -32,8 +32,4 @@ public abstract class RectangleEntity extends AbstractEntity implements
 		gl.glEnd();
 
 	}
-
-	public int getTextureID() {
-		return _scene.getTextureMapper().getTextureID(this.getClass());
-	}
 }

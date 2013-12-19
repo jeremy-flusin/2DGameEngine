@@ -3,6 +3,7 @@ package com.jflusin.engine.scenes;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -88,13 +89,13 @@ public abstract class AbstractScene  implements GLEventListener{
 
 	}
 
-	public void mapTexture(Class<? extends ITexturableEntity> pClass, String pString){
-		_textureMapper.mapTexture(pClass, pString);
+	public void mapTexture(Class<? extends ITexturableEntity> pClass, int pTextureId, String pString){
+		_textureMapper.mapTexture(pClass, pString, pTextureId);
 	}
 	
-	public void unmapTexture(Class<? extends ITexturableEntity> pClass){
-		_textureMapper.unmapTexture(pClass);
-	}
+//	public void unmapTexture(Class<? extends ITexturableEntity> pClass, pTextureId){
+//		_textureMapper.unmapTexture(pClass);
+//	}
 	
 	private void loadTextures(GLAutoDrawable pDrawable) {
 
@@ -107,14 +108,17 @@ public abstract class AbstractScene  implements GLEventListener{
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 
 		try {	
-
-			for (Class<? extends ITexturableEntity> iClass : _textureMapper.getStringTextureMapping().keySet()) {
-				String texturePath = _textureMapper.getTexturePath(iClass);
-				if(texturePath != null && !texturePath.isEmpty()){
-					File im = new File(texturePath);
-					Texture t = TextureIO.newTexture(im, true);
-					int textureId = t.getTextureObject(gl);
-					_textureMapper.setTextureID(iClass, textureId);
+			Map<Class<? extends ITexturableEntity>, Map<Integer, String>> map = _textureMapper.getTextureMapping();
+			for (Class<? extends ITexturableEntity> iClass : map.keySet()) {
+				Map<Integer, String> submap = map.get(iClass);
+				for(Integer textureId : submap.keySet()){
+					String texturePath = submap.get(textureId);
+					if(texturePath != null && !texturePath.isEmpty()){
+						File im = new File(texturePath);
+						Texture t = TextureIO.newTexture(im, true);
+						int glTextureId = t.getTextureObject(gl);
+						_textureMapper.setGLTextureID(iClass, textureId, glTextureId);
+					}
 				}
 			}
 

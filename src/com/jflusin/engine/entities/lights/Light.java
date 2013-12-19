@@ -14,7 +14,7 @@ public class Light extends AbstractEntity {
 	int _radius;
 	int _precision = 350;
 	Color _color;
-	AbstractEntity linkedEntity = null;
+	AbstractEntity _linkedEntity = null;
 	
 	public Light(int pX, int pY, int pRadius, Color pColor,
 			AbstractScene pScene) {
@@ -77,8 +77,8 @@ public class Light extends AbstractEntity {
 	
 	@Override
 	public int getX() {
-		if(linkedEntity != null){
-			return linkedEntity.getX() + linkedEntity.getWidth()/2;
+		if(_linkedEntity != null){
+			return _linkedEntity.getX() + _linkedEntity.getWidth()/2;
 		}else{
 			return super.getX();
 		}
@@ -86,8 +86,8 @@ public class Light extends AbstractEntity {
 	
 	@Override
 	public int getY() {
-		if(linkedEntity != null){
-			return linkedEntity.getY() + linkedEntity.getHeight()/2;
+		if(_linkedEntity != null){
+			return _linkedEntity.getY() + _linkedEntity.getHeight()/2;
 		}else{
 			return super.getY();
 		}
@@ -95,7 +95,7 @@ public class Light extends AbstractEntity {
 	
 	
 	public void linkToEntity(AbstractEntity pEntity){
-		linkedEntity = pEntity;
+		_linkedEntity = pEntity;
 	}
 	
 	public void setRadius(int pRadius){

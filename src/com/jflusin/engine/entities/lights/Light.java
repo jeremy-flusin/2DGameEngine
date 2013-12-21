@@ -12,7 +12,7 @@ import com.jflusin.engine.scenes.AbstractScene;
 public class Light extends AbstractEntity {
 
 	int _radius;
-	int _precision = 100;
+	int _precision = 10000;
 	float _opacity = 0.1f;
 	Color _color;
 	AbstractEntity _linkedEntity = null;
